@@ -1,38 +1,65 @@
-/*给定所有种类月饼的库存量、总售价、以及市场的最大需求量
-请你计算可以获得的最大收益是多少。*/
 #include <iostream>
-#include <string>
-#include <iomanip>
+#include <cstdio>
+#include <algorithm>
 using namespace std;
-double max(double x,double y,double z){
-	int max1=0;
-	if(x>=y)
-	max1=x;
-	else
-	max1=y;
-	if(max1<z)
-	max1=z;
-	return max1;
+
+//鍗曚环锛屽簱瀛橈紝闇�姹傞噺
+typedef struct item
+{
+
+	double sum;
+	double storage;
+	double price;
+
+}item;
+
+item cake[1010];
+
+bool cmp(item a,item b)
+{
+	return a.price>b.price;
 }
-int main(){
-	int n=0,D=0;
-	double a[1001],b[1001];
-	int c=0;
-	int i=0,j=0;
-	int sum=0;
-	double sin[1001];
-	cin>>n>>D;
+
+
+int main()
+{
+	int n=0;
+	scanf("%d",&n);  //浜у搧绉嶇被
+	double k=0;
+	scanf("%lf",&k);  //闇�姹傞噺
+	getchar();
+	int i=0;
 	for(i=0;i<n;i++)
 	{
-		cin>>a[i];
+
+		scanf("%lf",&cake[i].storage);
+
 	}
+	getchar();
 	for(i=0;i<n;i++)
 	{
-		cin>>b[i];
-		sin[i]=b[i]/a[i];
-		cout<<sin[i]<<endl;
+
+		scanf("%lf",&cake[i].sum);
+		cake[i].price=cake[i].sum/cake[i].storage;
 	}
-	max1(sindouble)
-	system("pause");
+
+	sort(cake,cake+n,cmp);
+
+	double money=0;
+	for(i=0;i<n;i++)
+	{
+		if(cake[i].storage<k)
+		{
+			money+=cake[i].sum;
+			k-=cake[i].storage;
+		}
+		else 
+		{
+			money+=cake[i].price*k;
+			break;
+		}
+	}
+	printf("%.2lf",money);
+
 	return 0;
-} 
+}
