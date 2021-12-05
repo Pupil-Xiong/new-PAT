@@ -1,62 +1,110 @@
+//瓒呰繃200锛屽嚭鐢熷湪2014涔嬪悗
 #include <iostream>
 #include <string>
-#include <vector>
-#include <cstdio>
+
 using namespace std;
 
-typedef struct {
-	string a[5];
-	int year, month, day;
-}people;
+typedef struct inform
+{
+	string name;
+	int year;
+	int month;
+	int day;
+	bool f;
+}Inform;
 
-int fla(people a1) {
-	int flag=0;
-	if (a1.year >= 1814 && a1.month >= 9 && a1.day > 6)
+bool valid(int a,int b,int c)
+{
+	if(a>2014||a<1814)
+		return false;
+	else if(a<2014&&a>1814)
+		return true;
+	else if(a==2014)
 	{
-		flag = 1;
+		if(b<9&&b>0)
+			return true;
+		else if(b==9)
+		{
+			if(c<=6&&c>0)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
 	}
-	return flag;
-}
-
-int cmp(people a1,people a2) {
-	if (a1.year > a2.year)  //a1小
-		return 0;
-	else if (a1.year < a2.year)
-		return 1;
-	else if (a1.month > a2.month)  //a1小
-		return 0;
-	else if (a1.month < a2.month)
-		return 1;
-	else if (a1.day > a2.day)
-		return 0;
-	else if (a1.day < a2.day)
-		return 1;
+	else if(a==1814)
+	{
+		if(b>9&&b<=12)
+			return true;
+		else if(b==9)
+		{
+			if(c>6&&c<=31)
+				return true;
+			else
+				return false;
+		}
+		else
+			return false;
+	}
+	else 
+		return false;
 }
 
 int main()
 {
-	int n, i = 0;
-	int k = 0;
-	int vs=0;
-	scanf_s("%d", &n);
-	people max, min;
-	min.year = 1814; min.month = 9; min.day = 6;   //年龄最小
-	max.year = 2014; max.month = 9; max.day = 6;
-	vector<people> x;
-	for (i = 0; i < n; i++)
+ int n=0,i=0;
+ int count=0;
+ string maxn;
+ string minn;
+ int y,m,d;
+ bool flag;
+ Inform max={maxn,2014,9,6,true};
+ Inform min={minn,1814,9,6,true};
+ cin>>n;
+ for(;i<n;i++)
+ {
+ 	Inform k[i];
+ 	cin>>k[i].name;
+ 	scanf("%d/%d/%d",&y,&m,&d);
+ 	k[i].year=y;
+ 	k[i].month=m;
+ 	k[i].day=d;
+ 	flag=valid(y,m,d);
+ 	k[i].f=flag;
+	if(flag==true)
 	{
-		scanf_s("%s", &x[i].a);
-		scanf_s("%d/%d/%d",&x[i].year, &x[i].month, &x[i].day);
-		if (fla(x[i]) == 0)
-			k++;
-		if (fla(x[i]) == 1)
+		count++;
+		if(k[i].year<max.year)
+			max=k[i];
+		else if(k[i].year==max.year)
 		{
-			if (cmp(x[i], min) == 0)
-				min = x[i];
-			else if (cmp(x[i], min) == 1)
-				max = x[i];
+			if(k[i].month<max.year)
+				max=k[i];
+			else if(k[i].month==max.month)
+			{
+				if(k[i].day<max.day)
+					max=k[i];
+			}
+		}
+		if(k[i].year>min.year)
+			min=k[i];
+		else if(k[i].year==min.year)
+		{
+			if(k[i].month>min.year)
+				min=k[i];
+			else if(k[i].month==min.month)
+			{
+				if(k[i].day>min.day)
+					min=k[i];
+			}
 		}
 	}
-	cout << k << " " << max.a << " " << min.a;
-		return 0;
+ }
+ for(int l=0;l<i;l++)
+ {
+ 	cout<<k[l].f<<endl;
+ }
+ cout<<count<<" "<<max.name<<" "<<min.name;
+	return 0;
 }
