@@ -1,67 +1,73 @@
 #include <iostream>
-#include <math.h>
-#include <iomanip>
+#include <cstdio>
 using namespace std;
-int main(){
-//能被 5 整除的数字中所有偶数的和   d偶数求和 
-//将被 5 除后余 1 的数字按给出顺序进行交错求和  c[]交错求和 
-//被 5 除后余 2 的数字的个数     b[]
-//被 5 除后余 3 的数字的平均数，精确到小数点后 1 位   sum/i
-//被 5 除后余 4 的数字中最大数字     max
-int n=0;
-int a[1001],b[5],f[5]={0};
-int e[1001];
-int i=0,j=0,k=0;
-double aver=0;
-cin>>n;
-for(i=0;i<n;i++)
+
+int main()
 {
-	cin>>a[i];
-	e[i]=a[i]%5;
-	if(e[i]==0)
+
+	int m=0,n=0;
+	int a1=0,b1=0,d1=0;
+	float c1=0;
+	int b2=1;
+	int sum1=0,sum2=0,sum3=0;
+	float aver=0;
+	int count=0;
+	int max=0;
+	int i=0;
+	cin>>n;
+	for(i=0;i<n;i++)
 	{
-		if(a[i]/2==0)
-		f[0]=f[0]+a[i];
-		b[0]++;
+		cin>>m;
+		switch(m%5)
+		{
+			case 0:if(m%2==0){sum1+=m;}break;
+			case 1:sum2+=b2*m;b2*=(-1);b1++;break;
+			case 2:count++;break;
+			case 3:sum3+=m;c1++;break;
+			case 4:max=max>m?max:m;d1++;break;
+		}
 	}
-	else if(e[i]==1){
-		b[1]++;
-		j=++b[1];
-		f[1]=f[1]+pow((-1),j)*e[i];
-		if(j>0){
-		j++;
-	    }
-	}
-	else if(e[i]==2){
-		b[2]++;
-		f[2]=b[2];
-	}
-	else if(e[i]==3){
-		b[3]++;
-		sum=sum+a[i];
-		f[3]=sum/b[3];
-	}
-	else if(e[i]==4)
+	if(sum1==0)
 	{
-		b[4]++;
-		if(e[i]>f[4])
-		f[4]=e[i];
+		cout<<'N'<<" ";
 	}
-	for(k=0;k<5;k++)
+	else
 	{
-	if(b[k]==0)
-	cout<<"N";
-	else if(k!=3&&b[k]!=0)
+		cout<<sum1<<" ";
+	}
+	if(b1==0)
 	{
-	cout<<f[k];
+		cout<<'N'<<" ";
 	}
-	else if(k==3&&b[k]!=0)
+	else
 	{
-		cout<<setprecision(1)<<f[3];
+		cout<<sum2<<' ';
 	}
-	if(k!=4)
-	cout<<" ";
+	if(count==0)
+	{
+		cout<<'N'<<" ";
 	}
+	else
+	{
+		cout<<count<<' ';
+	}
+	if(c1==0)
+	{
+		cout<<'N'<<' ';
+	}
+	else
+	{
+		aver=sum3/c1;
+		printf("%.1f ",aver);
+	}
+	if(d1==0)
+	{
+		cout<<'N';
+	}
+	else
+	{
+		cout<<max;
+	}
+
+	return 0;
 }
-return 0;
-} 

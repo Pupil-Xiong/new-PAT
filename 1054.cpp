@@ -1,42 +1,102 @@
 #include <iostream>
+#include <string>
+#include <math.h>
 using namespace std;
 
-int Jud(double a)
-{
-	int b=0;
-	b=a*1000;
-	if(a>1000||a<-1000)
-		return 1;
-	else if(a*1000!=b)
-		return 1;
-	else 
-		return 2;
-}
 int main()
 {
+	string s[100];
 	int n=0;
-	double a[100];
-	int k=0;
-	double count=0;
+	int i=0,j=0;
+	int num=0;
 	double sum=0;
 	double aver=0;
-	string s[100];
+	double x=0;
 	cin>>n;
 	getchar();
-	int i=0;
 	for(i=0;i<n;i++)
 	{
-		cin>>a[i];
-		k=Jud(a[i]);
-		if(k==2)
+		cin>>s[i];
+		int flag=0;
+		int count=0;
+		x=0;
+		if((s[i][0]<'0'||s[i][0]>'9')&&s[i][0]!='-')
 		{
-			count++;
-			sum+=a[i];
-		}
-		else if(k==1)
 			cout<<"ERROR: "<<s[i]<<" is not a legal number"<<endl;
-			cout<<a[i]<<endl;
+			continue;
+		}
+		else if(s[i][0]!='-')
+		{
+			x=s[i][0]-'0';
+			if(s[i].length()==1)
+			{
+				num++;
+				sum+=x;
+				continue;
+			}
+		}
+		for(j=1;j<s[i].length();j++)
+		{
+			if(s[i][j]=='.')
+			{
+				flag++;
+				if(flag>1)
+				{
+					cout<<"ERROR: "<<s[i]<<" is not a legal number"<<endl;
+					break;
+				}
+				if(j==s[i].length()-1)
+				{
+					num++;
+					sum+=x;
+					break;
+				}
+				continue;
+			}
+			else if(s[i][j]>='0'&&s[i][j]<='9')
+			{
+				if(flag==0)
+					x=x*10+(s[i][j]-'0');
+				else if(flag==1)
+				{
+					count--;
+					if(count==-3)
+					{
+						cout<<"ERROR: "<<s[i]<<" is not a legal number"<<endl;
+					    break;
+					}
+					x+=(s[i][j]-'0')*pow(10,count);
+				}
+			}
+			else
+			{
+				cout<<"ERROR: "<<s[i]<<" is not a legal number"<<endl;
+				break;
+			}
+			if(j==s[i].length()-1)
+			{
+				if(x>1000)
+				{
+					cout<<"ERROR: "<<s[i]<<" is not a legal number"<<endl;
+					break;
+				}
+				num++;
+				if(s[i][0]=='-')
+					sum+=-x;
+				else
+					sum+=x;
+			}
+		}
 	}
-	aver=sum/count;
-	printf("The average of %f numbers is %f",count,aver);
+	if(num!=0)
+	{
+		aver=sum/num;
+		if(num==1)
+			printf("The average of %d number is %.2lf",num,aver);
+		else if(num>1)
+			printf("The average of %d numbers is %.2lf",num,aver);
+	}
+	else
+		printf("The average of 0 numbers is Undefined");
+	return 0;
 }
